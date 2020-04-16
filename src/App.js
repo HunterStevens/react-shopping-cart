@@ -6,14 +6,17 @@ import data from './data';
 import Navigation from './components/Navigation';
 import Products from './components/Products';
 import ShoppingCart from './components/ShoppingCart';
+import { ProductContext } from './context/ProductContext';
 
 function App() {
 	const [products] = useState(data);
 	const [cart, setCart] = useState([]);
 
 	const addItem = item => {
+		console.log(item);
 		// add the given item to the cart
-		setCart(item);
+		setCart([...cart, item]);
+		console.log(cart);
 	};
 
 	return (
@@ -21,13 +24,15 @@ function App() {
 			<Navigation cart={cart} />
 
 			{/* Routes */}
+			<ProductContext.Provider value ={{products, addItem}}>
 			<Route exact path="/">
-				<Products products={products} addItem={addItem} />
+				<Products />
 			</Route>
 
 			<Route path="/cart">
 				<ShoppingCart cart={cart} />
 			</Route>
+			</ProductContext.Provider>
 		</div>
 	);
 }
